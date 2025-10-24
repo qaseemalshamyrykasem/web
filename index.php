@@ -4,11 +4,13 @@
 // ===============================
 
 class TelegramBot {
-    private $token = '7312346563:AAG4gyyu72Y4_UeTQVuqqZBkKYGdCkjvyjg';
+    private $token;
     private $apiUrl;
-    private $adminId = 7492270480; // ضع آيديك هنا
+    private $adminId = 1944946835; // ضع آيديك هنا
     
     public function __construct() {
+        // الحصول على التوكن من متغير البيئة أو استخدام القيمة الافتراضية
+        $this->token = getenv('BOT_TOKEN') ?: '7312346563:AAG4gyyu72Y4_UeTQVuqqZBkKYGdCkjvyjg';
         $this->apiUrl = "https://api.telegram.org/bot{$this->token}/";
         $this->initStorage();
     }
@@ -66,21 +68,27 @@ class TelegramBot {
             case '/menu':
                 $this->showMainMenu($chatId);
                 break;
+            case 'خدماتنا':
             case '📊 خدماتنا':
                 $this->showServices($chatId);
                 break;
+            case 'طلب خدمة':
             case '🛒 طلب خدمة':
                 $this->requestService($chatId);
                 break;
+            case 'اتصل بنا':
             case '📞 اتصل بنا':
                 $this->showContactInfo($chatId);
                 break;
+            case 'عن البوت':
             case 'ℹ️ عن البوت':
                 $this->showAbout($chatId);
                 break;
+            case 'حسابي':
             case '👤 حسابي':
                 $this->showUserProfile($chatId, $userId);
                 break;
+            case 'طلباتي':
             case '👀 طلباتي':
                 $this->showUserOrders($chatId, $userId);
                 break;
@@ -138,7 +146,7 @@ class TelegramBot {
     private function sendWelcomeMessage($chatId, $firstName) {
         $text = "🎉 أهلاً وسهلاً بك *{$firstName}*!\n\n" .
                "🤖 أنا *بوت الدعم الفني*\n" .
-               "⚡ يعمل على: https://bot-mv7h.onrender.com\n\n" .
+               "⚡ يعمل على: Render.com\n\n" .
                "اختر من القائمة:";
         
         $keyboard = [
@@ -254,7 +262,7 @@ class TelegramBot {
     private function showContactInfo($chatId) {
         $text = "📞 *اتصل بنا:*\n\n" .
                "📧 Email: support@example.com\n" .
-               "🌐 Website: example.com\n\n" .
+               "📱 Phone: +966500000000\n\n" .
                "🕒 ساعات العمل: 9am-5pm";
         
         $this->sendMessage($chatId, $text);
@@ -262,9 +270,10 @@ class TelegramBot {
     
     private function showAbout($chatId) {
         $text = "🤖 *عن البوت:*\n\n" .
-               "⚡ يعمل على: https://bot-mv7h.onrender.com\n" .
+               "⚡ يعمل على: Render.com\n" .
                "📊 الإصدار: 2.0.0\n" .
-               "🔧 المطور: أنت 💪";
+               "🔧 المطور: أنت\n\n" .
+               "✅ Webhook: مفعل";
         
         $this->sendMessage($chatId, $text);
     }
@@ -354,7 +363,8 @@ class TelegramBot {
             'http' => [
                 'header' => "Content-type: application/x-www-form-urlencoded\r\n",
                 'method' => 'POST',
-                'content' => http_build_query($data)
+                'content' => http_build_query($data),
+                'timeout' => 10
             ]
         ];
         
@@ -374,18 +384,23 @@ class TelegramBot {
         <head>
             <title>بوت تليجرام</title>
             <style>
-                body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-                .success { color: green; font-size: 24px; }
-                .info { background: #f0f0f0; padding: 20px; border-radius: 10px; margin: 20px auto; max-width: 600px; }
+                body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background: #f5f5f5; }
+                .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+                .success { color: #28a745; font-size: 24px; margin-bottom: 20px; }
+                .info { text-align: right; margin: 20px 0; }
+                .button { display: inline-block; background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin: 10px; }
             </style>
         </head>
         <body>
-            <div class='success'>✅ البوت يعمل بنجاح!</div>
-            <div class='info'>
-                <h3>🤖 بوت تليجرام</h3>
-                <p>⚡ الرابط: https://bot-mv7h.onrender.com</p>
-                <p>🔧 التوكن: 7312346563:...vyjg</p>
-                <p>📞 Webhook: مفعل ✅</p>
+            <div class='container'>
+                <div class='success'>✅ البوت يعمل بنجاح!</div>
+                <div class='info'>
+                    <h3>🤖 بوت تليجرام على Render.com</h3>
+                    <p><strong>⚡ الرابط:</strong> https://bot-mv7h.onrender.com</p>
+                    <p><strong>🔧 الحالة:</strong> Webhook جاهز</p>
+                    <p><strong>📊 الإصدار:</strong> 2.0.0</p>
+                </div>
+                <a href='https://t.me/your_bot_username' class='button'>🔗 ابدأ المحادثة مع البوت</a>
             </div>
         </body>
         </html>
