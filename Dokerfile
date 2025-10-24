@@ -1,0 +1,19 @@
+FROM php:8.2-apache
+
+# تفعيل التوسعات المطلوبة
+RUN docker-php-ext-install pdo pdo_mysql
+
+# نسخ الملفات إلى المسار المناسب
+COPY . /var/www/html/
+
+# تعيين الصلاحيات
+RUN chmod -R 755 /var/www/html
+
+# تعيين المسار الأساسي
+WORKDIR /var/www/html
+
+# تعريض المنفذ
+EXPOSE 8080
+
+# أمر التشغيل
+CMD ["php", "-S", "0.0.0.0:8080"]
